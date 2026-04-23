@@ -1,12 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.mycompany.app</groupId>
   <artifactId>my-app</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>my-app</name>
   <url>http://maven.apache.org</url>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -15,10 +19,19 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <!-- ✅ FIX: Java version for Jenkins (IMPORTANT) -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Use Java 17 (matches Jenkins Docker image) -->
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
   </properties>
+
   <build>
+
     <pluginManagement>
       <plugins>
         <plugin>
@@ -28,9 +41,11 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
     <plugins>
+
+      <!-- Build executable JAR -->
       <plugin>
-        <!-- Build an executable JAR -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.2.0</version>
@@ -44,26 +59,35 @@
           </archive>
         </configuration>
       </plugin>
+
+      <!-- ✅ FIX: Maven version rule -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version>
+
         <executions>
           <execution>
             <id>enforce-maven</id>
             <goals>
               <goal>enforce</goal>
             </goals>
+
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>[3.5.4)</version>
+                  <!-- FIXED RANGE -->
+                  <version>[3.5.4,)</version>
                 </requireMavenVersion>
               </rules>
             </configuration>
+
           </execution>
         </executions>
       </plugin>
+
     </plugins>
+
   </build>
+
 </project>
